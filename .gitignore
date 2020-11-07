@@ -1,0 +1,7 @@
+obj/
+bin/
+tester
+.vscode/
+node_modules/
+ft_printf
+printf

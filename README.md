@@ -16,5 +16,5 @@ node app.js
 ```
 
 ## Contributing
-More testcases are more better, thankyou.
+More testcases are more better, thankyou.  
 See testCases.js for more details.

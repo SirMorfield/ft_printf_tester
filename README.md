@@ -1,4 +1,4 @@
-# Foobar
+# ft_printf tester
 
 A NodeJS extremely complete tester for ft_printf
 ## Installation

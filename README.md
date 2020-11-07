@@ -8,6 +8,11 @@ Install NodeJS
 ```bash
 sudo apt install -y nodejs
 ```
+In `app.js` change:
+```js
+const ft_bin = '../ft_printf/bin/' // The location of the directory that contains your libftprintf.a file
+const ft_header = '../ft_printf/'  // The location of the directory that contains your file
+```
 
 ## Usage
 

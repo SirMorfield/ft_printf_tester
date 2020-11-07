@@ -1,6 +1,6 @@
 # ft_printf tester
 
-A NodeJS extremely complete tester for ft_printf
+A extremely complete NodeJS tester for ft_printf.
 ## Installation
 
 Install NodeJS

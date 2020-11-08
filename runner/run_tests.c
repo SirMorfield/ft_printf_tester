@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:23:07 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/05 21:50:13 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/08 20:54:28 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #endif
 
 #ifndef TESTCASE
-	#define TESTCASE "%s", "Hello World !"
+	#define TESTCASE "%s", "No testcase specified"
 #endif
 
 int	main(void)

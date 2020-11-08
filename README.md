@@ -1,15 +1,14 @@
 # ft_printf tester
 
 A extremely complete NodeJS tester for ft_printf.
-## Installation
-
 ![Example missing](doc/example.png?raw=true "Example")
 
+## Installation
 Install NodeJS
-
 ```bash
 sudo apt install -y nodejs
 ```
+
 In `app.js` change:
 ```js
 const build_cmd = 'make -C ../ft_printf/'	// The command that is used to compile your ft_printf

@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/09 15:37:29 by mvan-wij      ########   odam.nl         */
+/*   Updated: 2020/11/09 15:53:49 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ const ft_header = '../ft_printf/'
 
 const testCases = require('./testcases.js')
 const { execSync } = require('child_process')
-const util = require('util')
-const exec = util.promisify(require('child_process').exec)
+const runParallel = require('./runParallel.js')
 
 function color(text, r, g, b) {
 	return ("\033[38;2;" + `${r};${g};${b}m${text}` + "\033[0m")
@@ -28,14 +27,6 @@ try {
 } catch (err) {
 	process.stdout.write(err.stdout.toString())
 	process.stdout.write(err.stderr.toString())
-}
-
-async function compile(testCase) {
-	const gccs = [
-		exec(`gcc -w -DTESTCASE="${testCase.replace(/"/g, `\\"`)}" ./runner/run_tests.c -o runner/printf`),
-		exec(`gcc -w -DTESTCASE="${testCase.replace(/"/g, `\\"`)}" -DFT ./runner/run_tests.c -L${ft_bin} -I${ft_header} -lftprintf -o runner/ft_printf`)
-	]
-	await Promise.all(gccs)
 }
 
 opt_output = process.argv.indexOf('--output')
@@ -60,7 +51,10 @@ if (opt_output != -1) {
 	let has_ko = false
 	for (const testCase of testCases) {
 		process.stdout.write(`Testing (${testCase}) `)
-		await compile(testCase)
+		await runParallel([
+			`gcc -w -DTESTCASE="${testCase.replace(/"/g, `\\"`)}" ./runner/run_tests.c -o runner/printf`,
+			`gcc -w -DTESTCASE="${testCase.replace(/"/g, `\\"`)}" -DFT ./runner/run_tests.c -L${ft_bin} -I${ft_header} -lftprintf -o runner/ft_printf`
+		])
 		let printf_output
 		let ft_printf_output
 		try {

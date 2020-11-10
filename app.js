@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   app.js                                             :+:    :+:            */
+/*   appAsync.js                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/10 14:07:57 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/10 15:56:12 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,16 @@ const ft_bin = '../ft_printf/bin/'
 const ft_header = '../ft_printf/'
 
 const testCases = require('./testcases.js')
-const { execSync, exec } = require('child_process')
+const { execSync } = require('child_process')
+const runParallel = require('./runParallel.js')
 
 function color(text, r, g, b) {
 	return ("\033[38;2;" + `${r};${g};${b}m${text}` + "\033[0m")
+}
+
+const grade = {
+	ko: color('[KO]', 255, 0, 0),
+	ok: color('[OK]', 0, 255, 0)
 }
 
 try {
@@ -28,13 +34,22 @@ try {
 	process.stdout.write(err.stderr.toString())
 }
 
-opt_output = process.argv.indexOf('--output')
-opt_only_ko = process.argv.indexOf('--only-ko')
-if (opt_output != -1) {
+const options = {
+	"output": process.argv.includes('--output'),
+	"only-ko": process.argv.includes('--only-ko')
+}
+
+function clearLine() {
+	process.stdout.clearLine()
+	process.stdout.cursorTo(0)
+}
+
+if (options['output']) {
 	let out
-	console.log(`Testing (${process.argv[opt_output + 1]}) `)
+	const testCase = process.argv[process.argv.indexOf('--output') + 1]
+	console.log(`Testing (${testCase}) `)
 	try {
-		execSync(`gcc -w -DTESTCASE='${process.argv[opt_output + 1]}' -DFT ./runner/run_tests.c -L${ft_bin} -I${ft_header} -lftprintf -o runner/ft_printf`, { stdio: 'pipe' })
+		execSync(`gcc -w -DTESTCASE='${testCase}' -DFT ./runner/run_tests.c -L${ft_bin} -I${ft_header} -lftprintf -o runner/ft_printf`, { stdio: 'pipe' })
 		out = (execSync(`./runner/ft_printf`, { stdio: 'pipe' })).toString()
 	} catch (err) {
 		process.stdout.write(err.stdout.toString())
@@ -46,40 +61,47 @@ if (opt_output != -1) {
 	return
 }
 
+async function getOutputs(testCase) {
+	await runParallel([
+		`gcc -w -DTESTCASE="${testCase.replace(/"/g, `\\"`)}" ./runner/run_tests.c -o runner/printf`,
+		`gcc -w -DTESTCASE="${testCase.replace(/"/g, `\\"`)}" -DFT ./runner/run_tests.c -L${ft_bin} -I${ft_header} -lftprintf -o runner/ft_printf`
+	])
+	let printf_output
+	let ft_printf_output
+	try {
+		printf_output = (execSync(`./runner/printf`, { stdio: 'pipe' })).toString()
+	} catch (err) {
+		printf_output = `${color('Execution error', 255, 0, 0)}`
+	}
+	try {
+		ft_printf_output = (execSync(`./runner/ft_printf`, { stdio: 'pipe' })).toString()
+	} catch (err) {
+		ft_printf_output = `${color('Execution error', 255, 0, 0)}`
+	}
+	return { printf_output, ft_printf_output }
+}
+
 (async () => {
 	let has_ko = false
 	for (const testCase of testCases) {
-		process.stdout.write(`Testing (${testCase}) `)
-		execSync(`gcc -w -DTESTCASE="${testCase.replace(/"/g, `\\"`)}" ./runner/run_tests.c -o runner/printf`)
-		execSync(`gcc -w -DTESTCASE="${testCase.replace(/"/g, `\\"`)}" -DFT ./runner/run_tests.c -L${ft_bin} -I${ft_header} -lftprintf -o runner/ft_printf`)
-		let printf_output
-		let ft_printf_output
-		try {
-			printf_output = (execSync(`./runner/printf`, { stdio: 'pipe' })).toString()
-		} catch (err) {
-			printf_output = `${color('Execution error', 255, 0, 0)}`
-		}
-		try {
-			ft_printf_output = (execSync(`./runner/ft_printf`, { stdio: 'pipe' })).toString()
-		} catch (err) {
-			ft_printf_output = `${color('Execution error', 255, 0, 0)}`
-		}
-
+		let consoleOutput = ''
+		consoleOutput += `Testing (${testCase}) `
+		const { printf_output, ft_printf_output } = await getOutputs(testCase)
 		if (printf_output != ft_printf_output) {
 			has_ko = true
-			console.log(`${color('[KO]', 255, 0, 0)}`)
-			console.log(`printf:    <${printf_output}>`)
-			console.log(`ft_printf: <${ft_printf_output}>`)
+			consoleOutput += `${grade.ko}\n`
+			consoleOutput += `printf:    <${printf_output}>\n`
+			consoleOutput += `ft_printf: <${ft_printf_output}>\n\n`
+			process.stdout.write(consoleOutput)
+		} else {
+			consoleOutput += `${grade.ok}`
+			if (options['only-ko']) clearLine()
+			else {
+				consoleOutput += `\n<${color(printf_output, 0, 255, 0)}>\n\n`
+			}
+			process.stdout.write(consoleOutput)
 		}
-		else if (opt_only_ko == -1) {
-			console.log(`${color('[OK]', 0, 255, 0)}`)
-			console.log(`<${color(printf_output, 0, 255, 0)}>`)
-		}
-		console.log("")
 	}
-	if (has_ko) {
-		console.log(`${color('[KO]', 255, 0, 0)}`)
-	} else {
-		console.log(`${color('[OK]', 0, 255, 0)}`)
-	}
+	if (options['only-ko']) clearLine()
+	console.log(`\nGrade: ${has_ko ? grade.ko : grade.ok}`)
 })()

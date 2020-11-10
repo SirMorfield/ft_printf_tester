@@ -6,7 +6,17 @@ A extremely complete NodeJS tester for ft_printf.
 ## Installation
 Install NodeJS
 ```bash
+# Linux
+/bin/bash -c "$(curl -fsSL https://deb.nodesource.com/setup_14.x)"
 sudo apt install -y nodejs
+
+# Mac
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew install nodejs
+
+# Mac on 42 campus
+curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
+
 ```
 
 In `app.js` change:
@@ -26,7 +36,10 @@ Or alternatively, a single option:
 node app.js --output <testcase>
 ```
 ![Example missing](doc/single.png?raw=true "Example")
-
+Or alternatively, only showing the wrong outputs:
+```bash
+node app.js --only-ko
+```
 ## Contributing
 More testcases are more better, thankyou.  
 See testCases.js for more details.

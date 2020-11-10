@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/09 15:37:40 by mvan-wij      ########   odam.nl         */
+/*   Updated: 2020/11/10 14:07:57 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ opt_output = process.argv.indexOf('--output')
 opt_only_ko = process.argv.indexOf('--only-ko')
 if (opt_output != -1) {
 	let out
-	console.log(`Testing (${opt_output + 1}) `)
+	console.log(`Testing (${process.argv[opt_output + 1]}) `)
 	try {
-		execSync(`gcc -w -DTESTCASE='${opt_output + 1}' -DFT ./runner/run_tests.c -L${ft_bin} -I${ft_header} -lftprintf -o runner/ft_printf`, { stdio: 'pipe' })
+		execSync(`gcc -w -DTESTCASE='${process.argv[opt_output + 1]}' -DFT ./runner/run_tests.c -L${ft_bin} -I${ft_header} -lftprintf -o runner/ft_printf`, { stdio: 'pipe' })
 		out = (execSync(`./runner/ft_printf`, { stdio: 'pipe' })).toString()
 	} catch (err) {
 		process.stdout.write(err.stdout.toString())

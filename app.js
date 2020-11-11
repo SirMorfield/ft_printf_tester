@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   appAsync.js                                        :+:    :+:            */
+/*   app.js                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/10 15:56:12 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/11 15:58:53 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ try {
 } catch (err) {
 	process.stdout.write(err.stdout.toString())
 	process.stdout.write(err.stderr.toString())
+	process.exit(1)
 }
 
 const options = {
@@ -87,21 +88,20 @@ async function getOutputs(testCase) {
 		let consoleOutput = ''
 		consoleOutput += `Testing (${testCase}) `
 		const { printf_output, ft_printf_output } = await getOutputs(testCase)
+		if (options['only-ko']) clearLine()
 		if (printf_output != ft_printf_output) {
 			has_ko = true
 			consoleOutput += `${grade.ko}\n`
 			consoleOutput += `printf:    <${printf_output}>\n`
 			consoleOutput += `ft_printf: <${ft_printf_output}>\n\n`
-			process.stdout.write(consoleOutput)
 		} else {
 			consoleOutput += `${grade.ok}`
-			if (options['only-ko']) clearLine()
-			else {
+			if (!options['only-ko']) {
 				consoleOutput += `\n<${color(printf_output, 0, 255, 0)}>\n\n`
 			}
-			process.stdout.write(consoleOutput)
 		}
+		process.stdout.write(consoleOutput)
 	}
 	if (options['only-ko']) clearLine()
-	console.log(`\nGrade: ${has_ko ? grade.ko : grade.ok}`)
+	console.log(`Grade: ${has_ko ? grade.ko : grade.ok}`)
 })()

@@ -6,13 +6,13 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/12 21:22:43 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/13 23:58:07 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-const build_cmd = 'make -C ../ft_printf/'
-const ft_bin = '../ft_printf/bin/'
-const ft_header = '../ft_printf/'
+const ft_bin = '/home/joppe/GitHub/ft_printf/bin'
+const ft_header = '/home/joppe/GitHub/ft_printf'
+const { rebuild } = require('ft_printf_js_interface')
 
 const createTests = require('./createTests.js')
 const testCases = [
@@ -29,9 +29,13 @@ const {
 	clearLine,
 	options
 } = require('./helpers.js')
-const { getOutputsCompile } = require('./outputs.js')
+const {
+	getOutputsCompile,
+	getOutputsMarius
+} = require('./outputs.js')
 
-execSyncSafe(build_cmd)
+// execSyncSafe(build_cmd)
+rebuild({ headerDir: ft_header, libDir: ft_bin })
 
 if (options['output']) {
 	const testCase = process.argv[process.argv.indexOf('--output') + 1]
@@ -44,7 +48,7 @@ if (options['output']) {
 	for (const testCase of testCases) {
 		let consoleOutput = ''
 		consoleOutput += `Testing (${testCase}) `
-		const { printf_output, ft_printf_output } = await getOutputsCompile(testCase, ft_bin, ft_header)
+		const { printf_output, ft_printf_output } = await getOutputsMarius(testCase, ft_bin, ft_header)
 		if (options['only-ko']) clearLine()
 		if (printf_output != ft_printf_output) {
 			has_ko = true

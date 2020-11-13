@@ -16,24 +16,29 @@ brew install nodejs
 
 # Mac on 42 campus
 curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
+```
+Install dependencies
 
 ```
+cd ft_printf_tester/
 
+npm i -f --ignore-scripts
+
+```
 In `app.js` change:
 ```js
-const build_cmd = 'make -C ../ft_printf/'	// The command that is used to compile your ft_printf
-const ft_bin = '../ft_printf/bin/' 			// The directory that contains your libftprintf.a file.
-const ft_header = '../ft_printf/'  			// The directory that contains your header file.
+// The paths should be absolute (starting with a /).
+const ft_bin = '/home/joppe/GitHub/ft_printf/bin' // The directory that contains your libftprintf.a file.
+const ft_header = '/home/joppe/GitHub/ft_printf'  // The directory that contains your header file.
 ```
 
 ## Usage
-
 ```bash
 node app.js
 ```
-Or alternatively, a single option:
+Or alternatively, only run a single test case:
 ```bash
-node app.js --output <testcase>
+node app.js --output '"%s", "Hello World!"' # mind the quotes!
 ```
 ![Example missing](doc/single.png?raw=true "Example")
 Or alternatively, only showing the wrong outputs:

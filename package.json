@@ -16,5 +16,7 @@
     "url": "https://github.com/SirMorfield/printf_tester/issues"
   },
   "homepage": "https://github.com/SirMorfield/printf_tester#readme",
-  "dependencies": {}
+  "dependencies": {
+    "ft_printf_js_interface": "git+https://github.com/Mariusmivw/ft_printf_js_interface.git"
+  }
 }

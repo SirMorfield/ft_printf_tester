@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/12 21:10:07 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/12 21:22:49 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/13 17:47:28 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,19 @@ function runft_printf(testCase) {
 	return
 }
 
-// const { rebuild } = require('ft_printf_js_interface')
-// rebuild({ headerDir: ft_header, libDir: ft_bin })
-// const {
-// 	run,
-// 	ft_printf,
-// 	printf
-// } = require('ft_printf_js_interface')
-// const len = run(printf, `"Hello %s\n", "world"`)
-// const len2 = run(ft_printf, `"This uses ft_printf instead of printf\n"`);
+async function getOutputsMarius(testCase, ft_bin, ft_header) {
+	const { run, ft_printf, printf } = require('ft_printf_js_interface')
+	const [printf_output, len] = run(printf, testCase)
+	const [ft_printf_output, len2] = run(ft_printf, testCase);
+
+	return {
+		printf_output,
+		ft_printf_output
+	}
+}
 
 module.exports = {
 	getOutputsCompile,
 	runft_printf,
+	getOutputsMarius,
 }

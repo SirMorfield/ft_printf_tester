@@ -18,12 +18,10 @@ brew install nodejs
 curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
 ```
 Install dependencies
-
-```
+```bash
 cd ft_printf_tester/
 
 npm i -f --ignore-scripts
-
 ```
 In `app.js` change:
 ```js

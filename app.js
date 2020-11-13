@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/13 23:58:07 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/14 00:20:32 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ if (options['output']) {
 	return
 }
 
+let kos = 0;
 (async () => {
-	let has_ko = false
 	for (const testCase of testCases) {
 		let consoleOutput = ''
 		consoleOutput += `Testing (${testCase}) `
 		const { printf_output, ft_printf_output } = await getOutputsMarius(testCase, ft_bin, ft_header)
 		if (options['only-ko']) clearLine()
 		if (printf_output != ft_printf_output) {
-			has_ko = true
+			kos++
 			consoleOutput += `${grade.ko}\n`
 			consoleOutput += `printf:    <${printf_output}>\n`
 			consoleOutput += `ft_printf: <${ft_printf_output}>\n\n`
@@ -64,5 +64,7 @@ if (options['output']) {
 		process.stdout.write(consoleOutput)
 	}
 	if (options['only-ko']) clearLine()
-	console.log(`Grade: ${has_ko ? grade.ko : grade.ok}`)
+	const koPercent = kos == 0 ? '100.000' : ((kos / testCases.length) * 100).toFixed(3)
+	console.log(`Completed ${testCases.length} tests, with ${kos} KOs: ${koPercent}%`)
+	console.log(`Grade: ${kos > 0 ? grade.ko : grade.ok}`)
 })()

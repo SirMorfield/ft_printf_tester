@@ -34,15 +34,16 @@ const ft_header = '/home/joppe/GitHub/ft_printf'  // The directory that contains
 ```bash
 node app.js
 ```
+Or alternatively, only showing the wrong outputs:
+```bash
+node app.js --only-ko
+```
+![Example missing](doc/only-ko.png?raw=true "Example")
 Or alternatively, only run a single test case:
 ```bash
 node app.js --output '"%s", "Hello World!"' # mind the quotes!
 ```
 ![Example missing](doc/single.png?raw=true "Example")
-Or alternatively, only showing the wrong outputs:
-```bash
-node app.js --only-ko
-```
 ## Contributing
 More testcases are more better, thankyou.  
 See testCases.js for more details.

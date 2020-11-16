@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/16 14:53:07 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/16 15:04:33 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ const { rebuild } = require('ft_printf_js_interface')
 const createTests = require('./createTests.js')
 const testCases = [
 	...require('./testcases.js'),
-	// ...createTests('s', ['abc', 'abcdefghijklmnopqrstuvwxyz']),
-	// ...createTests('i', [-42, 123456789]),
-	// ...createTests('u', [42, 123456789])
+	...createTests('s', ['abc', 'abcdefghijklmnopqrstuvwxyz']),
+	...createTests('i', [-42, 123456789]),
+	...createTests('u', [42, 123456789])
 ]
 
 const {
@@ -37,13 +37,13 @@ const {
 } = require('./outputs.js')
 
 execSyncSafe(ft_buildCmd)
-rebuild({ headerDir: ft_header, libDir: ft_bin })
 
 if (options['output']) {
 	const testCase = process.argv[process.argv.indexOf('--output') + 1]
 	runft_printf(testCase, ft_bin, ft_header)
 	return
 }
+rebuild({ headerDir: ft_header, libDir: ft_bin })
 
 let kos = 0;
 (async () => {

@@ -21,7 +21,7 @@ Install dependencies
 ```bash
 cd ft_printf_tester/
 
-npm i -f --ignore-scripts
+npm i -f
 ```
 In `app.js` change:
 ```js

@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/16 14:40:33 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/16 14:53:07 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,11 @@ let kos = 0;
 		process.stdout.write(consoleOutput)
 	}
 	if (options['only-ko']) clearLine()
-	const koPercent = kos == 0 ? color('0%', 0, 255, 0) : color(((kos / testCases.length) * 100).toFixed(3) + '%', 255, 0, 0)
-	console.log(`Completed ${testCases.length} tests, with ${kos} KOs: ${koPercent}`)
+	let score
+	if (kos == 0)
+		score = `${color('with 0 KOs', 0, 255, 0)}`
+	else
+		score = `${color(`with ${kos} KOs: ${((kos / testCases.length) * 100).toFixed(3)}%`, 255, 0, 0)}`
+	console.log(`Completed ${testCases.length} tests, ${score}`)
 	console.log(`Grade: ${kos > 0 ? grade.ko : grade.ok}`)
 })()

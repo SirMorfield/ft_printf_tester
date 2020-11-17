@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/17 18:01:46 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/17 18:03:21 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ const testCases = [
 	...createTests('u', [0, 42, 123456789]),
 	...createTests('x', [0, 42, 123456789]),
 	...createTests('X', [0, 42, 123456789]),
-	...createTests('p', [0x0, 42, 123456789]),
+	...createTests('p', [0, 42, 123456789]),
 ]
 
 const {

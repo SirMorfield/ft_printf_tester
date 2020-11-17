@@ -7,7 +7,7 @@ A extremely complete NodeJS tester for ft_printf.
 Install NodeJS
 ```bash
 # Linux
-/bin/bash -c "$(curl -fsSL https://deb.nodesource.com/setup_14.x)"
+sudo /bin/bash -c "$(curl -fsSL https://deb.nodesource.com/setup_14.x)"
 sudo apt install -y nodejs
 
 # Mac

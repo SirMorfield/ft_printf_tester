@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/04 19:31:54 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/17 18:03:21 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/26 01:06:24 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ const { rebuild } = require('ft_printf_js_interface')
 const createTests = require('./createTests.js')
 const testCases = [
 	...require('./testcases.js'),
-	...createTests('s', ['abc', 'abcdefghijklmnopqrstuvwxyz']),
+	...createTests('s', [0, 'abc', 'abcdefghijklmnopqrstuvwxyz']),
 	...createTests('i', [0, -42, 123456789]),
 	...createTests('u', [0, 42, 123456789]),
 	...createTests('x', [0, 42, 123456789]),
@@ -37,6 +37,7 @@ const {
 	getOutputsCompile,
 	getOutputsMarius,
 	runft_printf,
+	runLeaks,
 } = require('./outputs.js')
 
 execSyncSafe(ft_buildCmd)
@@ -46,14 +47,22 @@ if (options['output']) {
 	runft_printf(testCase, ft_bin, ft_header)
 	return
 }
-rebuild({ headerDir: ft_header, libDir: ft_bin })
+
+if (options['leaks']) {
+	runLeaks(testCases, ft_bin, ft_header)
+	return
+}
+
+if (!options['compile']) {
+	rebuild({ headerDir: ft_header, libDir: ft_bin })
+}
 
 let kos = 0;
 (async () => {
 	for (const testCase of testCases) {
 		let consoleOutput = ''
 		consoleOutput += `Testing (${testCase}) `
-		const { printf_output, ft_printf_output } = await getOutputsMarius(testCase, ft_bin, ft_header)
+		const { printf_output, ft_printf_output } = options['compile'] ? await getOutputsCompile(testCase, ft_bin, ft_header) : await getOutputsMarius(testCase, ft_bin, ft_header)
 		if (options['only-ko']) clearLine()
 		if (printf_output != ft_printf_output) {
 			kos++

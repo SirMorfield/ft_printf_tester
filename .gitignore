@@ -5,3 +5,5 @@ tester
 node_modules/
 ft_printf
 printf
+leaks
+leaks.c

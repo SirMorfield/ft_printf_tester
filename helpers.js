@@ -6,7 +6,7 @@
 /*   By: jkoers <jkoers@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/09 14:52:56 by jkoers        #+#    #+#                 */
-/*   Updated: 2020/11/12 21:07:17 by jkoers        ########   odam.nl         */
+/*   Updated: 2020/11/18 23:25:19 by jkoers        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ function clearLine() {
 
 const options = {
 	"output": process.argv.includes('--output'),
-	"only-ko": process.argv.includes('--only-ko')
+	"only-ko": process.argv.includes('--only-ko'),
+	"leaks": process.argv.includes('--leaks'),
+	"compile": process.argv.includes('--compile'),
 }
 
 module.exports = {

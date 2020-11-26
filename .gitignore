@@ -7,3 +7,4 @@ ft_printf
 printf
 leaks
 leaks.c
+valgrid-out.txt
